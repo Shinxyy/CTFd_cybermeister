@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Deleting System32..."
 
 # Clean up any existing setup
 echo "Cleaning up existing containers and networks..."
