@@ -2,7 +2,23 @@
 
 # Clean up any existing setup
 echo "Cleaning up existing containers and networks..."
-docker compose down 2>/dev/null || true
+docker compose down -v 2>/dev/null || true
+
+# Remove all stopped containers
+echo "Removing all stopped containers..."
+docker container prune -f
+
+# Remove all unused networks
+echo "Removing unused networks..."
+docker network prune -f
+
+# Remove all unused volumes
+echo "Removing unused volumes..."
+docker volume prune -f
+
+# Remove all unused images
+echo "Removing unused images..."
+docker image prune -a -f
 
 # Check if already in swarm mode
 if ! docker info | grep -q "Swarm: active"; then
