@@ -312,7 +312,11 @@ def create_app(config="CTFd.config.Config"):
         if not utils.get_config("ctf_theme"):
             utils.set_config("ctf_theme", DEFAULT_THEME)
 
-        update_check(force=True)
+        try:
+            update_check(force=True)
+        except Exception as e:
+            # If update check fails (e.g., during migrations), log and continue
+            print(f"Update check failed: {e}")
 
         init_request_processors(app)
         init_template_filters(app)
