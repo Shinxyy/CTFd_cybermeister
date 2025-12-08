@@ -21,6 +21,10 @@ docker volume prune -f
 echo "Removing unused images..."
 docker image prune -a -f
 
+# Clean up local data directories
+echo "Cleaning up local data directories..."
+rm -rf .data
+
 # Check if already in swarm mode
 if ! docker info | grep -q "Swarm: active"; then
     echo "Initializing Docker Swarm..."
@@ -34,13 +38,13 @@ echo "Setting node label..."
 docker node update --label-add='name=linux-1' $(docker node ls -q)
 
 # Clone the CTFd whale repo if it doesn't exist
-if [ ! -d "CTFd/plugins/ctfd-whale" ]; then
+if [ ! -d "CTFd/plugins/ctfd_whale" ]; then
     echo "Cloning CTFd-Whale plugin..."
-    git clone https://github.com/frankli0324/ctfd-whale.git CTFd/plugins/ctfd-whale
+    git clone https://github.com/glzjin/CTFd-Whale.git CTFd/plugins/ctfd_whale
 else
     echo "CTFd-Whale plugin already exists, skipping clone"
 fi
 
-# Start services
-echo "Starting Docker Compose services..."
-docker compose up -d
+# Build and start services
+echo "Building and starting Docker Compose services..."
+docker compose up -d --build

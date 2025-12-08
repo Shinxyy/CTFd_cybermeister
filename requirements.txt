@@ -199,5 +199,10 @@ zope-event==5.1.1
 zope-interface==7.2
     # via gevent
 
+# CTFd-Whale plugin dependencies
+docker==4.1.0
+Flask-APScheduler==1.11.0
+flask-redis==0.4.0
+
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
