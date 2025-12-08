@@ -71,7 +71,6 @@ services:
     networks:
       frp_containers:
       frp_connect:
-        ipv4_address: 172.1.0.3
 
   db:
     image: mariadb:10.11
