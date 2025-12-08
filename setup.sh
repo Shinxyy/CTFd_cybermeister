@@ -48,3 +48,18 @@ fi
 # Build and start services
 echo "Building and starting Docker Compose services..."
 docker compose up -d --build
+
+# Configure CTFd Whale with Docker API settings
+echo "Configuring CTFd Whale..."
+docker exec ctfd_cybermeister-db-1 mariadb -uctfd -pctfd ctfd -e "
+INSERT INTO config (key, value) VALUES ('whale_api_url', 'tcp://host.docker.internal:2375') 
+ON DUPLICATE KEY UPDATE value='tcp://host.docker.internal:2375';
+" 2>/dev/null || echo "Whale config will be set on first run"
+
+# Restart CTFd to ensure everything is loaded
+echo "Restarting CTFd..."
+docker compose restart ctfd
+
+echo "Setup complete! CTFd is running on http://localhost:8000"
+echo "Docker Swarm could cause a delay in the initial startup of CTFd Whale plugin as it connects to the Docker API."
+

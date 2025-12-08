@@ -20,7 +20,8 @@ services:
       - .data/CTFd/logs:/var/log/CTFd
       - .data/CTFd/uploads:/var/uploads
       - .:/opt/CTFd:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - db
       - frpc
@@ -28,6 +29,7 @@ services:
         default:
         internal:
         frp_connect:
+        frp_containers:
 
   nginx:
     image: nginx:stable
