@@ -40,7 +40,7 @@ docker node update --label-add='name=linux-1' $(docker node ls -q)
 # Clone the CTFd whale repo if it doesn't exist
 if [ ! -d "CTFd/plugins/ctfd_whale" ]; then
     echo "Cloning CTFd-Whale plugin..."
-    git clone https://github.com/frankli0324/ctfd-whale.git CTFd/plugins/ctfd_whale
+    git clone https://github.com/StijnvdMade/ctfd-whale.git CTFd/plugins/ctfd_whale
 else
     echo "CTFd-Whale plugin already exists, skipping clone"
 fi
@@ -62,4 +62,5 @@ docker compose restart ctfd
 
 echo "Setup complete! CTFd is running on http://localhost:8000"
 echo "Docker Swarm could cause a delay in the initial startup of CTFd Whale plugin as it connects to the Docker API."
-
+echo "Don't forget to set the CTFd API URL in the Whale plugin settings after logging into CTFd."
+echo "The Docker API URL should be: tcp://host.docker.internal:2375"
