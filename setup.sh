@@ -62,4 +62,6 @@ docker compose restart ctfd
 
 echo "Setup complete! CTFd is running on http://localhost:8000"
 echo "Docker Swarm could cause a delay in the initial startup of CTFd Whale plugin as it connects to the Docker API."
+echo "Don't forget to set the CTFd API URL in the Whale plugin settings after logging into CTFd."
+echo "The Docker API URL should be: tcp://host.docker.internal:2375"
 
