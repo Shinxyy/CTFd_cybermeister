@@ -414,6 +414,7 @@ class Users(db.Model):
     verified = db.Column(db.Boolean, default=False)
     language = db.Column(db.String(32), nullable=True, default=None)
     change_password = db.Column(db.Boolean, default=False)
+    terms_accepted = db.Column(db.Boolean, default=False, nullable=False)
 
     # Relationship for Teams
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))

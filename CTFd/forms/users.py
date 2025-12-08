@@ -138,6 +138,35 @@ def attach_user_bracket_field(form_cls):
         setattr(form_cls, "bracket_id", select_field)  # noqa B010
 
 
+def build_terms_acceptance_field(form_cls):
+    """
+    Build the terms acceptance field for rendering.
+    Add field_type so Jinja knows how to render it.
+    """
+    if Configs.require_terms_acceptance:
+        field = getattr(form_cls, "terms_accepted", None)  # noqa B009
+        field.field_type = "boolean"
+        return [field]
+    else:
+        return []
+
+
+def attach_terms_acceptance_field(form_cls):
+    """
+    If terms of participation are configured, attach the acceptance checkbox
+    """
+    if Configs.require_terms_acceptance:
+        setattr(  # noqa B010
+            form_cls,
+            "terms_accepted",
+            BooleanField(
+                _l("I accept the rules and code of conduct"),
+                description=_l("You must accept the terms to participate"),
+                validators=[InputRequired()],
+            ),
+        )
+
+
 class UserSearchForm(BaseForm):
     field = SelectField(
         "Search Field",

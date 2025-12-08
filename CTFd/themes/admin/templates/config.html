@@ -72,13 +72,18 @@
 						<i class="fa fa-fingerprint action-icon"></i>Custom Fields
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link rounded-0 py-1" href="#registration_code" role="tab" data-toggle="tab">
-						<i class="fa fa-user-lock action-icon"></i>Registration Code
-					</a>
-				</li>
+			<li class="nav-item">
+				<a class="nav-link rounded-0 py-1" href="#registration_code" role="tab" data-toggle="tab">
+					<i class="fa fa-user-lock action-icon"></i>Registration Code
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link rounded-0 py-1" href="#terms_of_participation" role="tab" data-toggle="tab">
+					<i class="fa fa-file-contract action-icon"></i>Rules & Code of Conduct
+				</a>
+			</li>
 
-				<!-- Challenges -->
+			<!-- Challenges -->
 				<small class="section-title">Challenges</small>
 				<li class="nav-item">
 					<a class="nav-link rounded-0 py-1" href="#challenges" role="tab" data-toggle="tab">
@@ -206,13 +211,13 @@
 
 				{% include "admin/configs/brackets.html" %}
 
-				{% include "admin/configs/fields.html" %}
+			{% include "admin/configs/fields.html" %}
 
-				{% include "admin/configs/registration_code.html" %}
+			{% include "admin/configs/registration_code.html" %}
 
-				<!-- Challeges -->
+			{% include "admin/configs/terms_of_participation.html" %}
 
-				{% include "admin/configs/challenges.html" %}
+			<!-- Challeges -->				{% include "admin/configs/challenges.html" %}
 
 				<!-- Security -->
 

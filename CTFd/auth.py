@@ -259,6 +259,7 @@ def register():
         country = request.form.get("country")
         registration_code = str(request.form.get("registration_code", ""))
         bracket_id = request.form.get("bracket_id", None)
+        terms_accepted = request.form.get("terms_accepted", "")
 
         name_len = len(name) == 0
         names = (
@@ -363,6 +364,11 @@ def register():
         if valid_bracket is False:
             errors.append(_l("Please provide a valid bracket"))
 
+        # Check terms acceptance if required
+        if get_config("terms_of_participation"):
+            if not terms_accepted or terms_accepted.lower() != "y":
+                errors.append(_l("You must accept the rules and code of conduct"))
+
         if len(errors) > 0:
             return render_template(
                 "register.html",
@@ -378,6 +384,7 @@ def register():
                     email=email_address,
                     password=password,
                     bracket_id=bracket_id,
+                    terms_accepted=bool(terms_accepted),
                 )
 
                 if website:

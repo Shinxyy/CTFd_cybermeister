@@ -70,5 +70,15 @@ class _ConfigsWrapper:
     def challenge_ratings(self):
         return get_config("challenge_ratings", default="public")
 
+    @property
+    def terms_of_participation(self):
+        """Get the terms of participation text that users must accept"""
+        return get_config("terms_of_participation", default="")
+
+    @property
+    def require_terms_acceptance(self):
+        """Check if terms acceptance is required for registration"""
+        return bool(get_config("terms_of_participation"))
+
 
 Configs = _ConfigsWrapper()

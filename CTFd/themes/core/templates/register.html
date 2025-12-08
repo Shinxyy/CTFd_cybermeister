@@ -65,6 +65,26 @@
 
             {{ render_extra_fields(form.extra) }}
 
+            {% if Configs.require_terms_acceptance %}
+              <div class="mb-3">
+                <div class="alert alert-info">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-file-contract me-2"></i>
+                    <h6 class="mb-0"><b>Rules and Code of Conduct</b></h6>
+                  </div>
+                  <div class="terms-content p-2 mb-2" style="max-height: 150px; overflow-y: auto; background: rgba(255,255,255,0.9); border-radius: 4px; font-size: 0.9rem;">
+                    {{ Configs.terms_of_participation | safe }}
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="terms_accepted" id="terms_accepted" value="y" required>
+                    <label class="form-check-label" for="terms_accepted">
+                      <b>I have read and accept the rules and code of conduct <span class="text-danger">*</span></b>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
             <div class="row pt-3">
               <div class="col-6 col-md-4 offset-6 offset-md-8">
                 {{ form.submit(class="btn btn-block btn-primary w-100") }}

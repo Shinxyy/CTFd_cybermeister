@@ -1,0 +1,30 @@
+<div role="tabpanel" class="tab-pane config-section" id="terms_of_participation">
+	<form method="POST" autocomplete="off" class="w-100">
+		<div class="form-group">
+			<label for="terms_of_participation">
+				<i class="fas fa-file-contract"></i> Rules and Code of Conduct
+				<small class="form-text text-muted">
+					Terms that participants must accept before registering. Leave empty to disable this requirement.
+				</small>
+			</label>
+			<textarea class="form-control" id='terms_of_participation' name='terms_of_participation' rows="12" placeholder="Enter the rules and code of conduct that participants must accept...">{% if terms_of_participation is defined and terms_of_participation != None %}{{ terms_of_participation }}{% else %}<h5>Competition Rules</h5>
+<ul>
+<li>No attacks on the CTF infrastructure itself</li>
+<li>No denial-of-service attacks</li>
+<li>Collaboration within teams is allowed, between teams is not</li>
+<li>Use of automated tools is permitted</li>
+<li>Respectful behavior towards other participants is required</li>
+<li>Any violation of these rules may result in disqualification</li>
+</ul>{% endif %}</textarea>
+			<small class="form-text text-muted">
+				When configured, users will see a checkbox during registration requiring them to accept these terms. Supports HTML formatting.
+			</small>
+		</div>
+
+		<div class="alert alert-info">
+			<i class="fas fa-info-circle"></i> <b>Preview:</b> This is how participants will see the rules during registration.
+		</div>
+
+		<button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+	</form>
+</div>

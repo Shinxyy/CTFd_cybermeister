@@ -8,9 +8,11 @@ from CTFd.forms.fields import SubmitField
 from CTFd.forms.users import (
     attach_custom_user_fields,
     attach_registration_code_field,
+    attach_terms_acceptance_field,
     attach_user_bracket_field,
     build_custom_user_fields,
     build_registration_code_field,
+    build_terms_acceptance_field,
     build_user_bracket_field,
 )
 from CTFd.utils import get_config
@@ -51,11 +53,13 @@ def RegistrationForm(*args, **kwargs):
                 )
                 + build_registration_code_field(self)
                 + build_user_bracket_field(self)
+                + build_terms_acceptance_field(self)
             )
 
     attach_custom_user_fields(_RegistrationForm)
     attach_registration_code_field(_RegistrationForm)
     attach_user_bracket_field(_RegistrationForm)
+    attach_terms_acceptance_field(_RegistrationForm)
 
     return _RegistrationForm(*args, **kwargs)
 

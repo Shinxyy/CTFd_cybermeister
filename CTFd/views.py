@@ -230,6 +230,18 @@ def setup():
             # Team Size
             set_config("team_size", team_size)
 
+            # Set default Terms of Participation
+            default_terms = """<h5>Competition Rules</h5>
+<ul>
+<li>No attacks on the CTF infrastructure itself</li>
+<li>No denial-of-service attacks</li>
+<li>Collaboration within teams is allowed, between teams is not</li>
+<li>Use of automated tools is permitted</li>
+<li>Respectful behavior towards other participants is required</li>
+<li>Any violation of these rules may result in disqualification</li>
+</ul>"""
+            set_config("terms_of_participation", default_terms)
+
             set_config("mail_server", None)
             set_config("mail_port", None)
             set_config("mail_tls", None)
