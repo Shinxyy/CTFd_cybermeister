@@ -1,8 +1,7 @@
-version: '3'
-
+version: '3.7'
 services:
   ctfd:
-    build: .
+    image: ctfd_local:latest
     user: root
     restart: always
     ports:
@@ -20,17 +19,11 @@ services:
       - .data/CTFd/logs:/var/log/CTFd
       - .data/CTFd/uploads:/var/uploads
       - .:/opt/CTFd:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       - db
-      - frpc
     networks:
         default:
         internal:
-        frp_connect:
-        frp_containers:
 
   nginx:
     image: nginx:stable
@@ -38,42 +31,9 @@ services:
     volumes:
       - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - ctfd
-    networks:
-      - default
-
-  frps:
-    image: glzjin/frp
-    restart: always
-    volumes:
-      - ./conf/frp:/conf
-    entrypoint:
-      - /usr/local/bin/frps
-      - -c
-      - /conf/frps.ini
-    ports:
-      - 10000-10100:10000-10100
-      - 8001:8001
-    networks:
-      default:
-      frp_connect:
-
-  frpc:
-    image: glzjin/frp:latest
-    restart: always
-    volumes:
-      - ./conf/frp:/conf/
-    entrypoint:
-      - /usr/local/bin/frpc
-      - -c
-      - /conf/frpc.ini
-    depends_on:
-      - frps
-    networks:
-      frp_containers:
-      frp_connect:
 
   db:
     image: mariadb:10.11
@@ -91,6 +51,40 @@ services:
     # This command is required to set important mariadb defaults
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
 
+  frps:
+    image: glzjin/frp
+    restart: always
+    volumes:
+        - /mnt/c/Users/jelle/Documents/ctfdproject/CTFd_cybermeister/conf/frp:/conf
+    entrypoint:
+        - /usr/local/bin/frps
+        - -c
+        - /conf/frps.ini
+    ports:
+        - 10000-10100:10000-10100  # for "direct" challenges
+        - 8001:8001  # for "http" challenges
+    networks:
+        default:  # frps ports should be mapped to host
+        frp_connect:
+
+  frpc:
+    image: glzjin/frp:latest
+    restart: always
+    volumes:
+      - /mnt/c/Users/jelle/Documents/ctfdproject/CTFd_cybermeister/conf/frp:/conf
+    entrypoint:
+      - /usr/local/bin/frpc
+      - -c
+      - /conf/frpc.ini
+    depends_on:
+      - frps #need frps to run first
+    networks:
+        frp_containers:
+        frp_connect:
+            ipv4_address: 172.1.0.3
+
+
+
   cache:
     image: redis:4
     restart: always
@@ -103,17 +97,20 @@ networks:
     default:
     internal:
         internal: true
+
     frp_connect:
         driver: overlay
-        attachable: true
         internal: true
+        attachable: true
         ipam:
             config:
                 - subnet: 172.1.0.0/16
-    frp_containers:
+    
+    frp_containers:  # challenge containers are attached to this network
         driver: overlay
-        attachable: true
         internal: true
+        # if challenge containers are allowed to access the internet, remove this line
+        attachable: true
         ipam:
             config:
                 - subnet: 172.2.0.0/16

@@ -37,24 +37,25 @@ fi
 echo "Setting node label..."
 docker node update --label-add='name=linux-1' $(docker node ls -q)
 
-# Clone the CTFd whale repo if it doesn't exist
-if [ ! -d "CTFd/plugins/ctfd_whale" ]; then
-    echo "Cloning CTFd-Whale plugin..."
-    git clone https://github.com/StijnvdMade/ctfd-whale.git CTFd/plugins/ctfd_whale
-else
-    echo "CTFd-Whale plugin already exists, skipping clone"
-fi
+# # Clone the CTFd whale repo if it doesn't exist
+# if [ ! -d "CTFd/plugins/ctfd_whale" ]; then
+#     echo "Cloning CTFd-Whale plugin..."
+#     git clone https://github.com/StijnvdMade/ctfd-whale.git CTFd/plugins/ctfd_whale
+# else
+#     echo "CTFd-Whale plugin already exists, skipping clone"
+# fi
 
 # Build and start services
 echo "Building and starting Docker Compose services..."
-docker compose up -d --build
+docker-compose -f CTFd/docker-compose.yml exec ctfd python manage.py set_config whale:auto_connect_network
 
-# Configure CTFd Whale with Docker API settings
-echo "Configuring CTFd Whale..."
-docker exec ctfd_cybermeister-db-1 mariadb -uctfd -pctfd ctfd -e "
-INSERT INTO config (key, value) VALUES ('whale_api_url', 'tcp://host.docker.internal:2375') 
-ON DUPLICATE KEY UPDATE value='tcp://host.docker.internal:2375';
-" 2>/dev/null || echo "Whale config will be set on first run"
+
+# # Configure CTFd Whale with Docker API settings
+# echo "Configuring CTFd Whale..."
+# docker exec ctfd_cybermeister-db-1 mariadb -uctfd -pctfd ctfd -e "
+# INSERT INTO config (key, value) VALUES ('whale_api_url', 'tcp://host.docker.internal:2375') 
+# ON DUPLICATE KEY UPDATE value='tcp://host.docker.internal:2375';
+# " 2>/dev/null || echo "Whale config will be set on first run"
 
 # Restart CTFd to ensure everything is loaded
 echo "Restarting CTFd..."
